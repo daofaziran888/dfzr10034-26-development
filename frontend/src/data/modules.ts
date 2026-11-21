@@ -25,6 +25,17 @@ export const MODULES: ModuleMeta[] = [
     metrics: ["条目总数", "已索引条目", "解析异常条目"],
   },
   {
+    key: "field_generation",
+    name: "字段代际",
+    entity: "代际映射",
+    desc: "维护字段稳定身份与目录版本的代际映射，区分改名延续与名称复用重建，支撑跨版本反查与存量回填。",
+    fields: ["映射编号", "所属资产", "字段身份", "字段名称", "代际", "版本标签", "身份来源", "确认依据"],
+    statuses: ["生效中", "已退役", "待确认"],
+    actions: ["确认映射", "退役身份"],
+    actionTargets: {"确认映射": "生效中", "退役身份": "已退役"},
+    metrics: ["映射总数", "生效中映射", "已退役映射"],
+  },
+  {
     key: "quality_rule",
     name: "质量规则",
     entity: "质量检查",

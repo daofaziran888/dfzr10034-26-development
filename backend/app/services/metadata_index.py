@@ -21,8 +21,12 @@ class MetadataIndexService(BaseModuleService):
     ACTION_RULES = {"触发解析": "已索引", "重建索引": "解析异常", "标记过期": "已过期"}
     NEGATIVE_ACTIONS = []
 
-    def discover_schema(self, asset_code: str, schema_map: list[dict[str, str]]) -> list[dict[str, Any]]:
-        """从资产schema自动发现并索引元数据（Pipeline 1 核心方法）。"""
+    def discover_schema(self, asset_code: str, schema_map: list[dict[str, str]], version_tag: str = "") -> list[dict[str, Any]]:
+        """从资产schema自动发现并索引元数据（Pipeline 1 核心方法）。
+
+        version_tag 可选：登记条目所属的目录版本，供字段代际映射按版本归属；
+        旧作业不传时行为与之前完全一致，过渡期照常运行。
+        """
         entries = []
         for idx, field_def in enumerate(schema_map):
             meta = {
@@ -35,6 +39,7 @@ class MetadataIndexService(BaseModuleService):
                 "枚举值": field_def.get("enum_values", ""),
                 "样例数据": field_def.get("sample", ""),
                 "最后解析": _time.strftime("%Y-%m-%d %H:%M:%S"),
+                "版本标签": version_tag,
                 "status": "已索引",
                 "pending": False,
                 "abnormal": False,
@@ -46,6 +51,7 @@ class MetadataIndexService(BaseModuleService):
         self.emit_event("metadata_indexed", {
             "asset_code": asset_code,
             "field_count": len(entries),
+            "version_tag": version_tag,
         })
         return entries
 

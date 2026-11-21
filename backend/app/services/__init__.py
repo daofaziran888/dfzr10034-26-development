@@ -4,6 +4,7 @@ from __future__ import annotations
 from app.services.base import BaseModuleService
 from app.services.asset_registry import AssetRegistryService
 from app.services.metadata_index import MetadataIndexService
+from app.services.field_generation import FieldGenerationService
 from app.services.quality_rule import QualityRuleService
 from app.services.profile_stats import ProfileStatsService
 from app.services.classification import ClassificationService
@@ -33,6 +34,7 @@ LIFECYCLE_SERVICE = LifecyclePolicyService()
 SERVICES: dict[str, BaseModuleService] = {
     "asset_registry": AssetRegistryService(),
     "metadata_index": MetadataIndexService(),
+    "field_generation": FieldGenerationService(),
     "quality_rule": QUALITY_SERVICE,
     "profile_stats": ProfileStatsService(),
     "classification": ClassificationService(),
